@@ -37,7 +37,7 @@ app.use(connectFlash())
 //app.set('view engine', 'ejs');
 
 
-
+ 
 
 
 // const testBlog=new Blog({
@@ -97,10 +97,17 @@ app.post('/userlogin',redirectifAuthenticated,loginUserController)
 app.use((req,res)=>{
     res.render('not-found')
 })
+//jobbee 
+
+app.use(express.json());
+app.post('/p',(req,res)=>{
+    console.log(req.body);
+    res.send('ok');
+})
 
 
 
-
-app.listen(process.env.PORT,()=>{
+const port =process.env.PORT;
+app.listen(port,()=>{
     console.log(`App listening on port ${process.env.PORT}`);
 })

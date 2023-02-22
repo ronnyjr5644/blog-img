@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon index.js",
-    "build": "react-scripts build"
+    "dev" : "nodemon index",
+    "prod" : "SET NODE_ENV=production & nodemon index.js"
+
   },
   "author": "",
   "license": "ISC",
