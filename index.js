@@ -71,6 +71,9 @@ app.use(express.json())
 const jobsController=require('./controllers/jobs')
 const jobsnewController=require('./controllers/jobsnew')
 const jobssearchController=require('./controllers/jobssearch')
+const jobsupdateController=require('./controllers/jobsupdate')
+const jobsdeleteController=require('./controllers/jobsdelete')
+const jobssingleController=require('./controllers/jobssingle')
 
 app.use(express.static('public'));
  //app.use(expressEdge)
@@ -105,8 +108,13 @@ app.post('/userlogin',redirectifAuthenticated,loginUserController)
 //jobbee 
 //importing routes
 app.get('/api/v1/jobs',jobsController)
+app.get('/jobssingle/:id/:slug',jobssingleController)
 app.post('/jobsnew',jobsnewController)
 app.get('/jobssearch/:zipcode/:distance',jobssearchController)
+app.put('/jobsupdate/:id',jobsupdateController)
+app.delete('/jobsdelete/:id',jobsdeleteController)
+
+
 
 
 app.use((req,res)=>{
