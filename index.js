@@ -65,6 +65,13 @@ const loginController=require('./controllers/login')
 const loginUserController=require('./controllers/loginUser')
 const logoutController=require('./controllers/logout')
 
+
+app.use(express.json())
+//jobs controller
+const jobsController=require('./controllers/jobs')
+const jobsnewController=require('./controllers/jobsnew')
+const jobssearchController=require('./controllers/jobssearch')
+
 app.use(express.static('public'));
  //app.use(expressEdge)
  //app.set('views','${__dirname}/views')
@@ -94,10 +101,19 @@ app.post('/postsstore',auth,storePost,storePostController);
 app.post('/userregister',redirectifAuthenticated,storeUserController);
 app.post('/userlogin',redirectifAuthenticated,loginUserController)
 
+
+//jobbee 
+//importing routes
+app.get('/api/v1/jobs',jobsController)
+app.post('/jobsnew',jobsnewController)
+app.get('/jobssearch/:zipcode/:distance',jobssearchController)
+
+
 app.use((req,res)=>{
     res.render('not-found')
 })
-//jobbee 
+
+
 
 app.use(express.json());
 app.post('/p',(req,res)=>{
