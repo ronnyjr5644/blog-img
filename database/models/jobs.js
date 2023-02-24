@@ -119,7 +119,7 @@ applicantsApplied:{
        }
      
     })
-
+    jobSchema.index({ title: 'text' })
 
     
     module.exports=mongoose.model('Job',jobSchema);
