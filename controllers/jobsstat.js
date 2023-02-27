@@ -1,5 +1,6 @@
 const Job=require('../database/models/jobs')
-module.exports=async(req,res)=>{
+const catchAsyncErrors=require('../middleware/catchAsyncErrors')
+module.exports=catchAsyncErrors(async(req,res)=>{
     const stats= await Job.aggregate([
         {
             $match:{$text:{$search:"\""+req.params.topic+"\""}}
@@ -23,4 +24,4 @@ module.exports=async(req,res)=>{
         success:true,
         data:stats
     })
-};
+});

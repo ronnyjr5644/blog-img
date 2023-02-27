@@ -1,5 +1,5 @@
 const path=require('path');
-
+const aws = require('aws-sdk');
 require('dotenv').config({ path: './config.env' });
 const express=require('express');
 const edge=require('edge.js')
@@ -21,7 +21,8 @@ const mongoStore=connectMongo(expressSession);
 
 const connectFlash=require('connect-flash');
 
-
+const multer = require('multer'); // "^1.3.0"
+const multerS3 = require('multer-s3'); 
 
 app.use(expressSession({
   secret: 'secret',
@@ -36,20 +37,28 @@ app.use(connectFlash())
 
 //app.set('view engine', 'ejs');
 
+//file upload
 
- 
+aws.config.update({
+  secretAccessKey: 'YOUR_ACCESS_SECRET_KEY',
+  accessKeyId: 'YOUR_ACCESS_KEY_ID',
+  region: 'us-east-1'
+});
 
+const s3 = new aws.S3();
 
-// const testBlog=new Blog({
-//     title:'My first blosad',
-//     description:'This is my first asdblog',
-//     content:'hkshdkdshshskdshaskhdsakhdkshdjsakhdjashdjskadhjksahdkashdkjshdkahdkhkashkdashkdskhdsk'
-// })
-// testBlog.save().then(doc=>{
-//     console.log(doc);
-// }).catch(err=>{
-//     console.log(err);
-// });
+const upload = multer({
+  storage: multerS3({
+      s3: s3,
+      acl: 'public-read',
+      bucket: 'mybucky101',
+      key: function (req, file, cb) {
+          console.log(file);
+          cb(null, file.originalname); //use Date.now() for unique file keys
+      }
+  })
+});
+
 
 
 const Post=require('./database/models/Post')
@@ -64,6 +73,7 @@ const storeUserController=require('./controllers/storeUser')
 const loginController=require('./controllers/login')
 const loginUserController=require('./controllers/loginUser')
 const logoutController=require('./controllers/logout')
+const uploadController=require('./controllers/upload')
 
 
 app.use(express.json())
@@ -75,6 +85,24 @@ const jobsupdateController=require('./controllers/jobsupdate')
 const jobsdeleteController=require('./controllers/jobsdelete')
 const jobssingleController=require('./controllers/jobssingle')
 const jobsstatController=require('./controllers/jobsstat')
+
+//jobs middleware
+// const errorMiddleware=require('./middleware/errors')
+//handling uncaught exceptions
+process.on('uncaughtException',err=>{
+  console.log(`ERROR: ${err.message}`);
+  console.log('shutting down server due to uncaught eeception');
+  process.exit(1);
+})
+process.on('unhandledRejection',err=>{
+  console.log(`ERROR: ${err.message}`);
+  console.log('shutting down server due to unhandled rejection');
+  server.close(()=>{
+    process.exit(1);
+  })
+  process.exit(1);
+})
+
 
 app.use(express.static('public'));
  //app.use(expressEdge)
@@ -106,8 +134,12 @@ app.post('/userregister',redirectifAuthenticated,storeUserController);
 app.post('/userlogin',redirectifAuthenticated,loginUserController)
 
 
+app.get('/upload',uploadController)
+
+
 //jobbee 
 //importing routes
+
 app.get('/api/v1/jobs',jobsController)
 app.get('/jobssingle/:id/:slug',jobssingleController)
 app.post('/jobsnew',jobsnewController)
@@ -118,7 +150,14 @@ app.get('/jobsstat/:topic',jobsstatController)
 
 
 
-
+app.post('/upload', upload.array('upl', 25), (req, res, next) => {
+  res.send({
+    message: "Uploaded!",
+    urls: req.files.map(function(file) {
+      return {url: file.location, name: file.key, type: file.mimetype, size: file.size};
+    })
+  });
+});
 app.use((req,res)=>{
     res.render('not-found')
 })

@@ -15,11 +15,12 @@
 
     <!-- Custom fonts for this template -->
     <link href="/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-    <link href='https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
-    <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+    <link href='/https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='/https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
 
     <!-- Custom styles for this template -->
-    <link href="css/clean-blog.min.css" rel="stylesheet">
+    <link href="/css/clean-blog.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.css" rel="stylesheet">
 
   </head>
 
@@ -28,7 +29,7 @@
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
       <div class="container">
-        <a class="navbar-brand" href="index.html">Dover</a>
+        <a class="navbar-brand" href="/">Dover</a>
         <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
           Menu
           <i class="fa fa-bars"></i>
@@ -36,7 +37,7 @@
         <div class="collapse navbar-collapse" id="navbarResponsive">
           <ul class="navbar-nav ml-auto">
             <li class="nav-item">
-              <a class="nav-link" href="#">Home</a>
+              <a class="nav-link" href="/">Home</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="posts">New Post</a>
@@ -53,28 +54,25 @@
               <li class="nav-item">
                 <a class="nav-link" href="authlogout">Logout</a>
               </li>
-              <li class="nav-item">
-                <a class="nav-link" href="upload">upload image</a>
-              </li>
             <% }
              %>
-         
            
            
+            
           </ul>
         </div>
       </div>
     </nav>
 
     <!-- Page Header -->
-    <header class="masthead" style="background-image: url('/img/home-bg.jpg')">
+    <header class="masthead" style="background-image: url('/img/contact-bg.jpg')">
       <div class="overlay"></div>
       <div class="container">
         <div class="row">
           <div class="col-lg-8 col-md-10 mx-auto">
-            <div class="site-heading">
-              <h1>Doverite Blogs</h1>
-              
+            <div class="page-heading">
+              <h1>Add an file</h1>
+            
             </div>
           </div>
         </div>
@@ -82,49 +80,24 @@
     </header>
 
     <!-- Main Content -->
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-8 col-md-10 mx-auto">
-          <!-- <%= posts %> -->
-          <ul>
-            <% for (item of posts) { %>
-              <div class="luna">
-              <div class="post-preview1">
-                <a href="/post/<%= item._id %>">
-                  <h2 class="post-title">
-                   Title: <%= item.title %>
-                  </h2>
-                </a>
-              </div>
-              <div class="post-preview2">
-                <a href="post.html">
-                  <h5 class="post-title">
-                    Description: <%= item.description %>
-                  </h5>
-                </a>
-              </div>
-              <p class="post-meta">Posted by 
-                <a href="#"><%= item.author.username %></a>
-                on <%= item.createdAt.toDateString() %>
-              </p>
-              
-              </div>
-              <br>
-              <br>
-            <% } %>
-          </ul>
-          
-        
-          <!-- Pager -->
-          <div class="clearfix">
-            <a class="btn btn-primary float-right" href="#">Older Posts &rarr;</a>
-          </div>
+   <div class="container">
+    <form method="post" enctype="multipart/form-data" action="/upload">
+        <p>
+            <input type="text" name="title" placeholder="optional title"/>
+        </p>
+    
+        <p>
+            <input type="file" name="upl" multiple/>
+        </p>
+    
+        <p>
+            <input type="submit"/>
+        </p>
+    </form>
+
         </div>
-      </div>
     </div>
-
-    <hr>
-
+   </div>
     <!-- Footer -->
     <footer>
       <div class="container">
@@ -140,7 +113,7 @@
                 </a>
               </li>
               <li class="list-inline-item">
-                <a href="#">
+                <a href="/">
                   <span class="fa-stack fa-lg">
                     <i class="fa fa-circle fa-stack-2x"></i>
                     <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
@@ -148,7 +121,7 @@
                 </a>
               </li>
               <li class="list-inline-item">
-                <a href="#">
+                <a href="/">
                   <span class="fa-stack fa-lg">
                     <i class="fa fa-circle fa-stack-2x"></i>
                     <i class="fa fa-github fa-stack-1x fa-inverse"></i>
@@ -166,8 +139,25 @@
     <script src="/vendor/jquery/jquery.min.js"></script>
     <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
+    <!-- Contact Form JavaScript -->
+    <script src="/js/jqBootstrapValidation.js"></script>
+    <script src="/js/contact_me.js"></script>
+
     <!-- Custom scripts for this template -->
-    <script src="js/clean-blog.min.js"></script>
+    <script src="/js/clean-blog.min.js"></script>
+
+    <!-- //summer note -->
+    
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#content').summernote({
+                placeholder: 'Hello stand alone ui',
+                tabsize: 2,
+                height: 100
+            });
+        });
+    </script>
 
   </body>
 

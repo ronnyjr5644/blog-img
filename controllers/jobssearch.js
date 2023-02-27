@@ -1,7 +1,8 @@
 //search job with radius=>api/v1/jobs/:zipcode/:distance
 const Job=require('../database/models/jobs')
 const geoCoder=require('../utils/geocoder')
-module.exports=async(req,res,next) => {
+const catchAsyncErrors=require('../middleware/catchAsyncErrors')
+module.exports=catchAsyncErrors(async(req,res,next) => {
     const {zipcode, distance}=req.params;
     //get lat/lng from geocoder
     const loc=await geoCoder.geocode(zipcode);
@@ -22,4 +23,4 @@ module.exports=async(req,res,next) => {
         results: jobs.length,
         data: jobs
     })
-}
+})
