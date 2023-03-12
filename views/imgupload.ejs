@@ -81,20 +81,12 @@
 
     <!-- Main Content -->
    <div class="container">
-    <form method="post" enctype="multipart/form-data" action="/upload">
-        <p>
-            <input type="text" name="title" placeholder="optional title"/>
-        </p>
-    
-        <p>
-            <input type="file" name="upl" multiple/>
-        </p>
-    
-        <p>
-            <input type="submit"/>
-        </p>
+    <form action="/uploadi" method="POST" >
+      <input type="text" name="title" id="title" placeholder="Title">
+      <input type="file" name="file" id="file">
+      <button type="submit">Upload</button>
     </form>
-
+   
         </div>
     </div>
    </div>
@@ -105,7 +97,7 @@
           <div class="col-lg-8 col-md-10 mx-auto">
             <ul class="list-inline text-center">
               <li class="list-inline-item">
-                <a href="#">
+                <a href="/">
                   <span class="fa-stack fa-lg">
                     <i class="fa fa-circle fa-stack-2x"></i>
                     <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>

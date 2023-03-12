@@ -12,6 +12,18 @@ const bodyParser=require('body-parser')  //parses the post req coming from the b
 const mongoose=require('mongoose');
 const connectMongo= require('connect-mongo')
 const app=new express();
+const multer = require("multer");
+const { s3Uploadv2, s3Uploadv3 } = require("./public/js/s3Service");
+const uuid = require("uuid").v4;
+
+
+
+
+ const storage = multer.memoryStorage();
+
+
+const upload = multer();
+
 mongoose.connect(process.env.DATABASE,{useNewUrlParser:true,useCreateIndex:true,useFindAndModify:false,useUnifiedTopology: true 
 }).then(()=>{
 
@@ -21,8 +33,7 @@ const mongoStore=connectMongo(expressSession);
 
 const connectFlash=require('connect-flash');
 
-const multer = require('multer'); // "^1.3.0"
-const multerS3 = require('multer-s3'); 
+
 
 app.use(expressSession({
   secret: 'secret',
@@ -39,25 +50,9 @@ app.use(connectFlash())
 
 //file upload
 
-aws.config.update({
-  secretAccessKey: 'YOUR_ACCESS_SECRET_KEY',
-  accessKeyId: 'YOUR_ACCESS_KEY_ID',
-  region: 'us-east-1'
-});
 
-const s3 = new aws.S3();
 
-const upload = multer({
-  storage: multerS3({
-      s3: s3,
-      acl: 'public-read',
-      bucket: 'mybucky101',
-      key: function (req, file, cb) {
-          console.log(file);
-          cb(null, file.originalname); //use Date.now() for unique file keys
-      }
-  })
-});
+
 
 
 
@@ -135,7 +130,15 @@ app.post('/userlogin',redirectifAuthenticated,loginUserController)
 
 
 app.get('/upload',uploadController)
-
+app.post("/uploadi", upload.any(), async (req, res) => {
+  try {
+    const results = await s3Uploadv2(req.files);
+    console.log(results);
+    return res.json({ status: "success" });
+  } catch (err) {
+    console.log(err);
+  }
+});
 
 //jobbee 
 //importing routes
@@ -150,14 +153,8 @@ app.get('/jobsstat/:topic',jobsstatController)
 
 
 
-app.post('/upload', upload.array('upl', 25), (req, res, next) => {
-  res.send({
-    message: "Uploaded!",
-    urls: req.files.map(function(file) {
-      return {url: file.location, name: file.key, type: file.mimetype, size: file.size};
-    })
-  });
-});
+app.use(express.static('front'));
+
 app.use((req,res)=>{
     res.render('not-found')
 })
