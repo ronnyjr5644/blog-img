@@ -8,7 +8,7 @@ exports.s3Uploadv2 = async (files) => {
   const params = files.map((file) => {
     return {
       Bucket: process.env.AWS_BUCKET_NAME,
-      Key: `${uuid()}-${file.originalname}`,
+      Key: `${file.originalname}`,
       Body: file.buffer,
     };
   });
@@ -22,7 +22,7 @@ exports.s3Uploadv3 = async (files) => {
   const params = files.map((file) => {
     return {
       Bucket: process.env.AWS_BUCKET_NAME,
-      Key: `${uuid()}-${file.originalname}`,
+      Key: `${file.originalname}`,
       Body: file.buffer,
     };
   });

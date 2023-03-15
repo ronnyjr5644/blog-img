@@ -81,9 +81,9 @@
 
     <!-- Main Content -->
    <div class="container">
-    <form action="/uploadi" method="POST" >
+      <form action="/uploadi" method="post" enctype="multipart/form-data">
       <input type="text" name="title" id="title" placeholder="Title">
-      <input type="file" name="file" id="file">
+      <input type='file' name='files[]' multiple>
       <button type="submit">Upload</button>
     </form>
    
